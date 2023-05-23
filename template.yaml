@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: API para integração com Watson Assistant
+Parameters:
+  UserMail:
+    Type: String
+  PwdMail:
+    Type: String
+  ServerMail:
+    Type: String
+  PortMail:
+    Type: Number
+Globals:
+  Function:
+    Environment:
+      Variables:
+        USERMAIL: !Sub ${UserMail}
+        PWDMAIL: !Sub ${PwdMail}
+        SERVERMAIL: !Sub ${ServerMail}
+        PORTMAIL: !Sub ${PortMail}
+Resources:
+  # Bucket para aplicação estática com JS  
+  ApiGatewayWatson:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: watson
+      OpenApiVersion: '2.0'
+  # Função lambda para executar o código da API
+  LambdaWatson:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: watson-api #nome da função
+      Handler: main.info_get # nome do arquivo e método de onde está a função
+      Runtime: python3.9 # ambiente de execução
+      CodeUri: ./app # local onde estarão os arquivos da função
+      Description: API para get de informações
+      MemorySize: 128 # memória utilizada pela funçãop
+      Timeout: 30 # tempo máximo de execução, em segundos
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole # IAM role da função para permissões a outros recursos da AWS
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /info
+            Method: get
+            RestApiId:
+              Ref: ApiGatewayWatson
+
+Outputs:
+  APIGatewayURL:
+    Description: URL das APIs
+    Value: !Sub "https://${ApiGatewayWatson}.execute-api.${AWS::Region}.amazonaws.com/watson/"

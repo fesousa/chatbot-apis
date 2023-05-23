@@ -1,0 +1,76 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+       "title":"API Watoson",
+       "version":"1.0.0",
+       "description":"Exemplo de API para integraão com Watson."
+    },
+    "servers":[
+       {
+          "url":"https://ff2d47wv1h.execute-api.us-east-1.amazonaws.com/watson",
+          "description":"Servidor de desenvolvimento"
+       }
+    ],
+    "paths":{
+       "/info":{
+          "get":{
+             "summary":"Retorna informação do curso",
+             "parameters":[
+                {
+                   "name":"curso",
+                   "in":"query",
+                   "description":"curso para buscar",
+                   "required":true,
+                   "schema":{
+                      "type":"string"
+                   }
+                }
+             ],
+             "responses":{
+                "200":{
+                   "description":"Sucesso",
+                   "content":{
+                      "application/json":{
+                         "schema":{
+                            "type":"object",
+                            "properties":{
+                               "info":{
+                                  "type":"string",
+                                  "description":"informação do curso"
+                               }
+                            }
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       },
+       "/email":{
+          "post":{
+             "summary":"Enviar e-mail",
+             "requestBody":{
+                "required":true,
+                "content":{
+                   "application/json":{
+                      "schema":{
+                         "type":"object",
+                         "properties":{
+                            "email":{
+                               "type":"string",
+                               "description":"email do usuário"
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             "responses":{
+                "201":{
+                   "description":"Usuário criado com sucesso"
+                }
+             }
+          }
+       }
+    }
+ }
