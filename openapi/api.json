@@ -7,12 +7,12 @@
     },
     "servers":[
        {
-          "url":"https://ff2d47wv1h.execute-api.us-east-1.amazonaws.com/watson",
+          "url":"https://ff2d47wv1h.execute-api.us-east-1.amazonaws.com",
           "description":"Servidor de desenvolvimento"
        }
     ],
     "paths":{
-       "/info":{
+       "/watson/info":{
           "get":{
              "summary":"Retorna informação do curso",
              "parameters":[
@@ -46,7 +46,7 @@
              }
           }
        },
-       "/email":{
+       "watson/email":{
           "post":{
              "summary":"Enviar e-mail",
              "requestBody":{
@@ -59,7 +59,11 @@
                             "email":{
                                "type":"string",
                                "description":"email do usuário"
-                            }
+                            },
+                            "curso":{
+                              "type":"string",
+                              "description":"curso escolhido"
+                           }
                          }
                       }
                    }
