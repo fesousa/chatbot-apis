@@ -3,7 +3,7 @@
     "info":{
        "title":"API Watoson",
        "version":"1.0.0",
-       "description":"Exemplo de API para integraão com Watson."
+       "description":"Exemplo de API para integração com Watson."
     },
     "servers":[
        {
@@ -46,7 +46,7 @@
              }
           }
        },
-       "watson/email":{
+       "/watson/email":{
           "post":{
              "summary":"Enviar e-mail",
              "requestBody":{
@@ -63,6 +63,10 @@
                             "curso":{
                               "type":"string",
                               "description":"curso escolhido"
+                           },
+                           "semestre":{
+                              "type":"string",
+                              "description":"semestre escolhido"
                            }
                          }
                       }

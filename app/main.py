@@ -31,5 +31,40 @@ def info_get(event, context):
     return {'statusCode': 200, "body":json.dumps({'info':info}), "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS,GET,POST"}}
+
+
+def email_post(event, context):    
+    req = json.loads(event['body'])
+    print(req)
+    
+    u = os.getenv('USERMAIL')
+    g = os.getenv('PWDMAIL')
+
+
+    try:
+        # configuração e envio de email
+        message = MIMEMultipart()
+        message['From'] = u
+        message['To'] = req['email']
+        message['Subject'] = 'Confirmação pré-matrícula'
+        texto_mensagem = f'<h1>Olá! Sua pré-matrícula no curso de {req["curso"]} para o {req["semestre"]} semestre está confirmada</h1>'
+        message.attach(MIMEText(texto_mensagem, 'html'))
+        
+        session = smtplib.SMTP(os.getenv("SERVERMAIL"), os.getenv("PORTMAIL")) 
+        session.starttls()
+        session.login(u, g)
+        text = message.as_string()
+        session.sendmail(u, req['email'], text)
+        session.quit()
+        # retorno de sucesso no formato JSON
+        return {'statusCode': 200, "body":json.dumps({'status':'ok'}), "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST"}}
+    except Exception as ex:
+        print(traceback.print_exc())
+        # retorno de erro no formato JSON
+        return {'statusCode': 200, "body":json.dumps({'status':'erro'}), "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST"}}
         
    
